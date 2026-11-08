@@ -8,7 +8,7 @@ const { trim } = require('lodash');
 
 const handler = {};
 
-handler.handleReqRes = (res, req) => {
+handler.handleReqRes = (req, res) => {
      // request
     
         const parseUrl = url.parse(req.url, true);
