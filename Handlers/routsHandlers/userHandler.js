@@ -147,7 +147,7 @@ handler._users.put = (requestProperties, callback) => {
                         userData.firstName = firstName;
                     }
                     if (lastName) {
-                        userData.firstName = firstName;
+                        userData.lastName = lastName;
                     }
                     if (password) {
                         userData.password = hash(password);
@@ -184,7 +184,39 @@ handler._users.put = (requestProperties, callback) => {
 }
 
 handler._users.delete = (requestProperties, callback) => {
+     // check the phone number if valid
+    const phone =
+        typeof requestProperties.queryStringObject.phone === 'string' &&
+        requestProperties.queryStringObject.phone.trim().length === 11
+            ? requestProperties.queryStringObject.phone
+            : false;
 
+    if (phone) {
+        // lookup the user
+        data.read('users', phone, (err1, userData) => {
+            if (!err1 && userData) {
+                data.delete('users', phone, (err2) => {
+                    if (!err2) {
+                        callback(200, {
+                            message: 'User was successfully deleted!',
+                        });
+                    } else {
+                        callback(500, {
+                            error: 'There was a server side error!',
+                        });
+                    }
+                });
+            } else {
+                callback(500, {
+                    error: 'There was a server side error!',
+                });
+            }
+        });
+    } else {
+        callback(400, {
+            error: 'There was a problem in your request!',
+        });
+    }
 }
 
 
