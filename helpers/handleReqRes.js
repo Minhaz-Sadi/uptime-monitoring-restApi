@@ -3,6 +3,7 @@ const url = require('url');
 const routes = require('../routs.js');
 const {notFoundHandler} = require('../Handlers/routsHandlers/notFoundHandler.js');
 const { trim } = require('lodash');
+const {parseJSON} = require('./utilities.js')
 
 
 
@@ -40,12 +41,16 @@ handler.handleReqRes = (req, res) => {
     
         req.on('end', ()=>{
             realData += decoder.end();
+
+            requestProperties.body = parseJSON(realData);
+
             chooseHandler(requestProperties, (statusCode, payload) => {
             statusCode = typeof(statusCode) === 'number' ? statusCode : 500;
             payload = typeof(payload) === 'object' ? payload : {};
 
             const payloadString = JSON.stringify(payload);
 
+            res.setHeader('content-type', 'application/JSON')
             res.writeHead(statusCode);
             res.end(payloadString);
         }) 
