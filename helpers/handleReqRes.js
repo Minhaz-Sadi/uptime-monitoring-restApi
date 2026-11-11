@@ -1,6 +1,6 @@
 const {StringDecoder} = require('string_decoder');
 const url = require('url');
-const routes = require('../routs.js');
+const routes = require('../routes.js');
 const {notFoundHandler} = require('../Handlers/routsHandlers/notFoundHandler.js');
 const { trim } = require('lodash');
 const {parseJSON} = require('./utilities.js')
