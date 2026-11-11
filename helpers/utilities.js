@@ -31,7 +31,6 @@ utilities.hash = (str) => {
 // hash string
 utilities.hash = (str) => {
     if (typeof str === 'string' && str.length > 0) {
-        console.log(environments, process.env.NODE_ENV);
         const hash = crypto.createHmac('sha256', environments.secretKey).update(str).digest('hex');
         return hash;
     }
